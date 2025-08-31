@@ -11,8 +11,6 @@ import { TransactionModule } from '@/infrastructure/modules/transaction/transact
 import { UserModule } from '@/infrastructure/modules/user/user.module';
 import { ApplicationModule } from '@/application/application.module';
 import { ConfigModule } from '@/infrastructure/config/config.module';
-import { SecretService } from '@/infrastructure/config/secret.service';
-import { SECRET_SERVICE_TOKEN } from '@/domain/services/secret.service.interface';
 
 /**
  * Root Application Module
