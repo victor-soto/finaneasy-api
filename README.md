@@ -151,6 +151,10 @@ DB_DATABASE=finaneasy
 
 # Application Configuration
 PORT=3000
+
+# CORS Configuration
+# Comma-separated list of allowed origins (e.g., http://localhost:3000,https://myapp.com)
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:5173
 ```
 
 ## Running the Application
@@ -168,6 +172,62 @@ pnpm start:dev
 ```
 
 The API will be available at `http://localhost:3000/graphql`
+
+## CORS Configuration
+
+This API is configured with CORS (Cross-Origin Resource Sharing) to allow requests from frontend applications. The CORS settings are configured in `src/main.ts`.
+
+### Default Configuration
+
+The API allows requests from the following origins by default:
+
+- `http://localhost:3000` (React default)
+- `http://localhost:3001` (Alternative React port)
+- `http://localhost:5173` (Vite default)
+- `http://localhost:8080` (Vue CLI default)
+- `http://localhost:4200` (Angular default)
+
+### Customizing CORS
+
+To customize CORS settings, update the `ALLOWED_ORIGINS` environment variable:
+
+```env
+# Single origin
+ALLOWED_ORIGINS=http://localhost:3000
+
+# Multiple origins (comma-separated)
+ALLOWED_ORIGINS=http://localhost:3000,https://myapp.com,https://staging.myapp.com
+
+# Allow all origins (not recommended for production)
+ALLOWED_ORIGINS=*
+```
+
+### CORS Features Enabled
+
+- ✅ **Credentials**: Cookies and authentication headers are allowed
+- ✅ **Methods**: GET, POST, PUT, DELETE, PATCH, OPTIONS
+- ✅ **Headers**: Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-Key
+- ✅ **Preflight Caching**: 24-hour cache for OPTIONS requests
+
+### Testing CORS
+
+You can test CORS functionality using curl:
+
+```bash
+# Test preflight request
+curl -X OPTIONS http://localhost:3000/graphql \
+  -H "Origin: http://localhost:3000" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: Content-Type" \
+  -v
+
+# Test actual request
+curl -X POST http://localhost:3000/graphql \
+  -H "Origin: http://localhost:3000" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ __schema { types { name } } }"}' \
+  -v
+```
 
 ## Database Management
 

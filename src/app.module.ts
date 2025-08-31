@@ -10,6 +10,9 @@ import { TransactionEntity } from '@/infrastructure/persistence/entities/transac
 import { TransactionModule } from '@/infrastructure/modules/transaction/transaction.module';
 import { UserModule } from '@/infrastructure/modules/user/user.module';
 import { ApplicationModule } from '@/application/application.module';
+import { ConfigModule } from '@/infrastructure/config/config.module';
+import { SecretService } from '@/infrastructure/config/secret.service';
+import { SECRET_SERVICE_TOKEN } from '@/domain/services/secret.service.interface';
 
 /**
  * Root Application Module
@@ -23,6 +26,7 @@ import { ApplicationModule } from '@/application/application.module';
  */
 @Module({
   imports: [
+    ConfigModule, // Import configuration module first
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',
