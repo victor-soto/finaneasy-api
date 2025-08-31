@@ -96,3 +96,115 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+# FinanEasy API
+
+A NestJS GraphQL API for financial transaction management.
+
+## Import Aliases
+
+This project uses TypeScript path aliases for cleaner imports:
+
+- `@/*` - Points to `src/*`
+- `@/infrastructure/*` - Points to `src/infrastructure/*`
+- `@/application/*` - Points to `src/application/*`
+- `@/domain/*` - Points to `src/domain/*`
+
+### Example Usage
+
+```typescript
+// Instead of relative imports like:
+import { UserEntity } from '../../../infrastructure/persistence/entities/user.entity';
+
+// You can use aliases:
+import { UserEntity } from '@/infrastructure/persistence/entities/user.entity';
+```
+
+## Database Setup
+
+### Using Docker Compose (Recommended)
+
+1. Start the PostgreSQL database:
+
+```bash
+docker-compose up -d
+```
+
+2. The database will be available at:
+   - Host: `localhost`
+   - Port: `5432`
+   - Database: `finaneasy`
+   - Username: `postgres`
+   - Password: `postgres`
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=finaneasy
+
+# Application Configuration
+PORT=3000
+```
+
+## Running the Application
+
+1. Install dependencies:
+
+```bash
+pnpm install
+```
+
+2. Start the development server:
+
+```bash
+pnpm start:dev
+```
+
+The API will be available at `http://localhost:3000/graphql`
+
+## Database Management
+
+- **Start database**: `docker-compose up -d`
+- **Stop database**: `docker-compose down`
+- **View logs**: `docker-compose logs postgres`
+- **Reset database**: `docker-compose down -v && docker-compose up -d`
+
+## Database Migrations
+
+TypeORM migrations are used to manage database schema changes following best practices:
+
+- **Generate migration**: `pnpm migration:generate src/infrastructure/persistence/migrations/MigrationName`
+- **Run migrations**: `pnpm migration:run`
+- **Revert last migration**: `pnpm migration:revert`
+- **Show migration status**: `pnpm migration:show`
+
+### Migration Best Practices
+
+1. **Always generate migrations from entity changes** - Don't write migrations manually
+2. **Review generated migrations** - Check for proper constraints, indexes, and data types
+3. **Use descriptive migration names** - Include the purpose of the change
+4. **Test migrations** - Always test both up and down migrations
+5. **Version control** - Commit migration files to track schema changes
+6. **Backup before production** - Always backup before running migrations in production
+
+### Migration Workflow
+
+1. Make changes to your domain entities in `src/domain/entities/`
+2. Generate a migration: `pnpm migration:generate src/infrastructure/persistence/migrations/AddNewField`
+3. Review and adjust the generated migration file if needed
+4. Test the migration: `pnpm migration:run` then `pnpm migration:revert`
+5. Run the migration: `pnpm migration:run`
+6. Commit the migration file to version control
+
+### Architecture
+
+- **Domain Entities**: `src/domain/entities/` - Business logic and data models
+- **Infrastructure**: `src/infrastructure/persistence/` - Database concerns
+- **Migrations**: `src/infrastructure/persistence/migrations/` - Schema versioning

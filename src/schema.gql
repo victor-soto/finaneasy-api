@@ -1,0 +1,62 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserGraphQL {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  fullName: String!
+  transactions: [TransactionGraphQL!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TransactionGraphQL {
+  id: ID!
+  amount: Float!
+  description: String!
+  transactionType: TransactionType!
+  category: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  signedAmount: Float!
+  user: UserGraphQL
+}
+
+"""The type of transaction"""
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+type Query {
+  transaction(id: String!): TransactionGraphQL
+  user(id: String!): UserGraphQL
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): TransactionGraphQL!
+  createUser(input: CreateUserInput!): UserGraphQL!
+}
+
+input CreateTransactionInput {
+  amount: Float!
+  description: String!
+  transactionType: TransactionType!
+  category: String
+  userId: String!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
